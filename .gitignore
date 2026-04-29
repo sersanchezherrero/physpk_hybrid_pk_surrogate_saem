@@ -1,0 +1,47 @@
+# Python caches
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Local outputs and checkpoints
+outputs/
+*.h5
+*.keras
+*.joblib
+
+# PhysPK / compiled runtime artifacts
+*.dll
+*.a
+*.lib
+*.pyd
+deck_python_3_11.pyc
+deck_python_3_9.pyc
+deck_python_3_7.pyc
+vendor/physpk_backend/*
+!vendor/physpk_backend/README.md
+
+# Paper build artifacts
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.fdb_latexmk
+paper/*.fls
+paper/*.log
+paper/*.out
+paper/*.pdf
+paper/*.synctex.gz
+
+# Data files that should stay local unless explicitly approved
+data/raw/
+data/private/
+Monoclonal_Antibody*.txt
+virtual_data.txt
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
