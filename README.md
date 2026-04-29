@@ -1,58 +1,126 @@
-# Hybrid Mechanistic-AI Population PK Workflow
+# Hybrid Mechanistic-Emulator PK Workflow
 
-Reproducible codebase for surrogate-assisted mechanistic population pharmacokinetic inference using SAEM, exact DECK simulation, residual XGBoost emulation, internal validation, sparse-sampling analyses, and practical identifiability assessment.
+Public GitHub-ready copy of the Python workflow used for surrogate-assisted
+population pharmacokinetic inference with SAEM, residual XGBoost emulation,
+internal bootstrap validation, sparse-sampling analyses, and manuscript figure
+generation.
 
-## Overview
+## What this repository contains
 
-This repository contains the core Python workflow used to combine:
+- Core Python source code for the analysis pipeline
+- Unit and integration tests based on synthetic or mocked data
+- Figure-generation scripts used for the manuscript
+- A clean LaTeX paper folder with curated manuscript figures
+- A curated results folder with reviewer-friendly derived outputs
+- Documentation describing the expected data format and the proprietary
+  components that are intentionally excluded
 
-- exact mechanistic population PK simulation through PhysPK/DECK
-- nonlinear mixed-effects inference with SAEM
-- residual XGBoost surrogate acceleration
-- model-informed internal validation by parametric bootstrap
-- sparse-sampling scenario analysis
-- local sensitivity-based practical identifiability assessment
+## What is intentionally NOT included
 
-The workflow is designed for reproducible experimentation on real observed PK data and internally generated virtual cohorts.
+This public copy does **not** include:
 
-## Repository structure
+- the proprietary PhysPK / EcosimPro model source
+- generated PhysPK runtime libraries (`.dll`, `.a`, `.pyc`, exported wrappers)
+- raw clinical datasets or any data with uncertain redistribution rights
+- local experiment outputs, checkpoints, trained emulator artifacts, or bulky
+  working folders
+
+That means the exact mechanistic backend is optional in the public repo. The
+Python workflow is preserved, but users must provide their own local PhysPK
+export if they want to run the exact simulator path.
+
+## Repository layout
 
 ```text
-src/                Core source code
-tests/              Unit and integration tests
-figures/            Final figures for manuscript or documentation
-paper/              Manuscript files (LaTeX, bibliography, tables)
-examples/           Example commands, configs, or sample outputs
-docs/               Documentation and workflow notes
+github_repo_upload_clean/
+  main.py
+  config.py
+  deck_interface.py
+  saem.py
+  ml_utils.py
+  bootstrap_utils.py
+  diagnostics.py
+  init_utils.py
+  models.py
+  nca_utils.py
+  sensitivity_analysis.py
+  gui_launcher.py
+  requirements.txt
+  .gitignore
+  UPLOAD_MANIFEST.md
+  docs/
+  examples/
+  paper/
+  results/
+  scripts/
+  tests/
+  data/
+  vendor/
 ```
 
-## Main components
+## Quick start
 
-- `main.py`: main entry point for the analysis pipeline
-- `saem.py`: SAEM-based NLME estimation
-- `deck_interface.py`: interface between Python and the exact DECK simulator
-- `ml_utils.py`: residual emulator training and ETA warm-start utilities
-- `bootstrap_utils.py`: parametric bootstrap and sparse-sampling generation
-- `diagnostics.py`: exact post-fit diagnostics
-- `init_utils.py`: initialization strategies
-- `sensitivity_analysis.py`: local sensitivity and identifiability analysis
-- `gui_launcher.py`: lightweight graphical launcher for predefined analysis presets
+1. Create a clean Python environment.
+2. Install the Python dependencies:
 
-## Typical workflow
+```bash
+pip install -r requirements.txt
+```
 
-1. Load real PK data or internally generated virtual cohorts.
-2. Define the mechanistic two-compartment NLME model.
-3. Initialize population parameters.
-4. Train or reuse a residual XGBoost surrogate.
-5. Validate the surrogate against the exact DECK simulator.
-6. Run SAEM with either exact or surrogate-assisted simulation.
-7. Recompute all final diagnostics with the exact mechanistic model.
-8. Evaluate results through external validation, internal bootstrap, sparse-sampling scenarios, and sensitivity analysis.
+3. If you want to use the exact mechanistic backend, place your local exported
+   PhysPK runtime next to `deck_interface.py` or inside
+   `vendor/physpk_backend/`.
 
-## Important note on reproducibility
+4. Launch the GUI:
 
-The exact DECK/PhysPK simulator may not be fully redistributable, depending on the licensing conditions of the underlying software and generated execution artifacts. If redistribution is restricted, this repository should contain the Python-side workflow and documentation, while DECK-specific binaries or generated runtime libraries should remain local and be referenced as external prerequisites.
+```bash
+py -3.11 gui_launcher.py
+```
 
-## Suggested first step
+5. Or run the CLI directly:
 
-Create this repository as **private** first. Then copy in the curated set of files listed in `FILES_TO_INCLUDE.md`, verify that no proprietary binaries or restricted datasets are being exposed, and only then decide whether to make the repository public.
+```bash
+py -3.11 main.py --data_file path\\to\\your_data.txt --init_method prev_run --n_iter 40 --exp_name my_run
+```
+
+## Manuscript material
+
+The curated paper files are stored in:
+
+- `paper/main.tex`
+- `paper/ref.bib`
+- `paper/figures/`
+
+This keeps the manuscript assets versioned without mixing them with local
+working outputs.
+
+## Curated results package
+
+The repository also includes a curated `results/` folder containing:
+
+- scenario-level summary tables
+- final estimates for the main scenarios
+- SAEM convergence traces
+- emulator validation metrics
+- sparse-sampling summaries
+- sensitivity-analysis summaries and raw sensitivity plots
+
+These files were selected to improve reproducibility and reviewer inspection
+without exposing restricted raw data or bulky local training artifacts.
+
+## Recommended release workflow
+
+Before making the GitHub repository public:
+
+1. Review `docs/PROPRIETARY_COMPONENTS.md`
+2. Review `docs/UPLOAD_CHECKLIST.md`
+3. Confirm that no raw clinical or company-restricted files were copied
+4. Confirm that `vendor/physpk_backend/` is still empty except for the README
+
+## Notes
+
+- The GUI and CLI remain useful even without the proprietary backend for
+  command generation, synthetic tests, and manuscript asset preparation.
+- The exact PhysPK execution path requires local non-redistributed artifacts.
+- You may want to add a license and a `CITATION.cff` file before publishing the
+  repository.
