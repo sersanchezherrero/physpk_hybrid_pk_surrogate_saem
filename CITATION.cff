@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the associated article."
+title: "Hybrid mechanistic-ML workflow for surrogate-assisted SAEM population pharmacokinetic inference"
+type: software
+authors:
+  - family-names: "Sánchez-Herrero"
+    given-names: "Sergio"
+    orcid: "https://orcid.org/0000-0002-5647-0330"
+  - family-names: "García-Álvarez"
+    given-names: "Diego"
+  - family-names: "Calvet"
+    given-names: "Laura"
+  - family-names: "Juan"
+    given-names: "Ángel A."
+repository-code: "https://github.com/sersanchezherrero/physpk_hybrid_pk_surrogate_saem"
+url: "https://github.com/sersanchezherrero/physpk_hybrid_pk_surrogate_saem"
+license: MIT
+preferred-citation:
+  type: article
+  title: "Domain-validated residual XGBoost surrogates for model-informed biopharmaceutics and population pharmacokinetic inference"
+  authors:
+    - family-names: "Sánchez-Herrero"
+      given-names: "Sergio"
+    - family-names: "García-Álvarez"
+      given-names: "Diego"
+    - family-names: "Calvet"
+      given-names: "Laura"
+    - family-names: "Juan"
+      given-names: "Ángel A."
+  journal: "European Journal of Pharmaceutics and Biopharmaceutics"
+  year: 2026
+  doi: "10.1016/j.ejpb.2026.115260"
