@@ -1,48 +1,28 @@
-# Upload Manifest
+# Public Repository Manifest
 
-This folder is the curated public copy prepared for GitHub upload.
+This repository contains the curated non-proprietary components of the
+surrogate-assisted SAEM workflow.
 
-## Included at the repository root
+## Included
 
-- `main.py`
-- `config.py`
-- `deck_interface.py`
-- `saem.py`
-- `ml_utils.py`
-- `bootstrap_utils.py`
-- `diagnostics.py`
-- `init_utils.py`
-- `models.py`
-- `nca_utils.py`
-- `sensitivity_analysis.py`
-- `gui_launcher.py`
-- `README.md`
-- `.gitignore`
-- `requirements.txt`
+- `src/`: core Python implementation
+- `scripts/`: manuscript figure-generation scripts
+- `results/`: curated derived summary results
+- `tests/`: synthetic and mocked tests
+- `README.md`: repository documentation
+- `requirements.txt`: Python dependencies
+- `pytest.ini`: test configuration
+- `CITATION.cff`: citation metadata
+- `LICENSE`: MIT License
 
-## Included subfolders
+## Intentionally excluded
 
-- `tests/`
-  Synthetic and mocked unit/integration tests
-- `scripts/`
-  Figure-generation and manuscript asset scripts
-- `paper/`
-  Curated LaTeX manuscript and final manuscript figures
-- `results/`
-  Curated derived outputs, summary tables, traces, and sensitivity artifacts
-- `docs/`
-  Public-release notes, data format, and proprietary component guidance
-- `examples/`
-  GUI launcher batch file and example commands
-- `data/`
-  Empty public data area plus an input template
-- `vendor/physpk_backend/`
-  Placeholder folder for a local non-versioned PhysPK export
+- proprietary PhysPK®/EcosimPro model source
+- exported or compiled PhysPK runtime libraries
+- raw source pharmacokinetic datasets
+- trained emulator artefacts
+- local checkpoints and bulky experiment outputs
+- compiled files and caches
 
-## Explicitly excluded from upload
-
-- local PhysPK runtime DLLs and generated Python wrappers
-- the company-owned mechanistic model
-- raw clinical datasets
-- large `outputs/` experiment folders
-- compiled artifacts and caches
+Users wishing to execute the exact mechanistic path must provide their own
+licensed PhysPK® export locally.
