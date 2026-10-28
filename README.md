@@ -1,126 +1,165 @@
 # Hybrid Mechanistic-Emulator PK Workflow
 
-Public GitHub-ready copy of the Python workflow used for surrogate-assisted
+Public implementation of the Python workflow used for surrogate-assisted
 population pharmacokinetic inference with SAEM, residual XGBoost emulation,
-internal bootstrap validation, sparse-sampling analyses, and manuscript figure
-generation.
+internal bootstrap validation, sparse-sampling analyses, sensitivity analysis,
+and manuscript figure generation.
 
-## What this repository contains
+This repository accompanies the article:
 
-- Core Python source code for the analysis pipeline
-- Unit and integration tests based on synthetic or mocked data
-- Figure-generation scripts used for the manuscript
-- A clean LaTeX paper folder with curated manuscript figures
-- A curated results folder with reviewer-friendly derived outputs
-- Documentation describing the expected data format and the proprietary
-  components that are intentionally excluded
+> Sánchez-Herrero S, García-Álvarez D, Calvet L, Juan AA.  
+> Domain-validated residual XGBoost surrogates for model-informed
+> biopharmaceutics and population pharmacokinetic inference.  
+> *European Journal of Pharmaceutics and Biopharmaceutics* (2026).  
+> https://doi.org/10.1016/j.ejpb.2026.115260
 
-## What is intentionally NOT included
+## Repository contents
 
-This public copy does **not** include:
+- `src/`: core Python implementation of the analysis pipeline
+- `scripts/`: manuscript figure-generation scripts
+- `results/`: curated derived results used for reproducibility and inspection
+- `tests/`: unit and integration tests based on synthetic or mocked data
+- `requirements.txt`: Python dependencies
+- `pytest.ini`: test configuration
+- `UPLOAD_MANIFEST.md`: manifest of files selected for public release
+- `CITATION.cff`: software and article citation metadata
+- `LICENSE`: software reuse terms
 
-- the proprietary PhysPK / EcosimPro model source
-- generated PhysPK runtime libraries (`.dll`, `.a`, `.pyc`, exported wrappers)
-- raw clinical datasets or any data with uncertain redistribution rights
-- local experiment outputs, checkpoints, trained emulator artifacts, or bulky
-  working folders
+## Reproducibility scope
 
-That means the exact mechanistic backend is optional in the public repo. The
-Python workflow is preserved, but users must provide their own local PhysPK
-export if they want to run the exact simulator path.
+The repository provides the non-proprietary Python components of the workflow,
+including:
+
+- residual XGBoost emulation
+- pre-activation pharmacokinetic validation
+- SAEM estimation routines
+- bootstrap utilities
+- sparse-sampling analyses
+- diagnostic and sensitivity-analysis routines
+- figure-generation scripts
+- curated derived results
+
+The public repository intentionally does **not** include:
+
+- the proprietary PhysPK®/EcosimPro model source
+- exported or compiled PhysPK runtime libraries
+- raw source pharmacokinetic datasets
+- trained emulator artefacts
+- local checkpoints or bulky working outputs
+
+The exact mechanistic execution path therefore requires users to provide their
+own licensed PhysPK® export. The public code, synthetic tests, derived results,
+and figure-generation utilities can be inspected without redistributing the
+proprietary backend.
 
 ## Repository layout
 
 ```text
-github_repo_upload_clean/
-  main.py
-  config.py
-  deck_interface.py
-  saem.py
-  ml_utils.py
-  bootstrap_utils.py
-  diagnostics.py
-  init_utils.py
-  models.py
-  nca_utils.py
-  sensitivity_analysis.py
-  gui_launcher.py
-  requirements.txt
-  .gitignore
-  UPLOAD_MANIFEST.md
-  docs/
-  examples/
-  paper/
-  results/
-  scripts/
-  tests/
-  data/
-  vendor/
+physpk_hybrid_pk_surrogate_saem/
+├── src/                  Core Python implementation
+├── scripts/              Manuscript figure-generation scripts
+├── results/              Curated derived results
+├── tests/                Synthetic and mocked tests
+├── requirements.txt      Python dependencies
+├── pytest.ini            Test configuration
+├── UPLOAD_MANIFEST.md    Public-release file manifest
+├── CITATION.cff          Citation metadata
+├── LICENSE               Software license
+└── README.md
 ```
 
-## Quick start
+## Installation
 
-1. Create a clean Python environment.
-2. Install the Python dependencies:
+Python 3.11 is recommended.
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/sersanchezherrero/physpk_hybrid_pk_surrogate_saem.git
+cd physpk_hybrid_pk_surrogate_saem
+```
+
+2. Create and activate a clean Python environment.
+
+3. Install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. If you want to use the exact mechanistic backend, place your local exported
-   PhysPK runtime next to `deck_interface.py` or inside
-   `vendor/physpk_backend/`.
+## Optional PhysPK backend
 
-4. Launch the GUI:
+To use the exact mechanistic simulator, provide a local licensed PhysPK export
+using one of the following options:
 
-```bash
-py -3.11 gui_launcher.py
+- place it next to `src/deck_interface.py`
+- place it inside `src/vendor/physpk_backend/`
+- set the `PHYSPK_DECK_STEM` environment variable to the exported deck stem
+
+The proprietary backend must not be committed to this repository.
+
+Example in PowerShell:
+
+```powershell
+$env:PHYSPK_DECK_STEM = "C:\path\to\dkd_win64_gcc64v11_2"
 ```
 
-5. Or run the CLI directly:
+## Running the workflow
+
+Launch the graphical interface:
 
 ```bash
-py -3.11 main.py --data_file path\\to\\your_data.txt --init_method prev_run --n_iter 40 --exp_name my_run
+py -3.11 src/gui_launcher.py
 ```
 
-## Manuscript material
+Or run the command-line interface:
 
-The curated paper files are stored in:
+```bash
+py -3.11 src/main.py --data_file path\to\your_data.txt --init_method prev_run --n_iter 40 --exp_name my_run
+```
 
-- `paper/main.tex`
-- `paper/ref.bib`
-- `paper/figures/`
+The exact arguments required depend on the selected analysis and the
+availability of the local mechanistic backend.
 
-This keeps the manuscript assets versioned without mixing them with local
-working outputs.
+## Running the tests
 
-## Curated results package
+The public tests use synthetic or mocked data and do not require redistribution
+of the proprietary PhysPK model:
 
-The repository also includes a curated `results/` folder containing:
+```bash
+py -3.11 -m pytest
+```
+
+## Curated results
+
+The `results/` folder contains selected derived outputs, including:
 
 - scenario-level summary tables
 - final estimates for the main scenarios
 - SAEM convergence traces
 - emulator validation metrics
 - sparse-sampling summaries
-- sensitivity-analysis summaries and raw sensitivity plots
+- sensitivity-analysis summaries and plots
 
-These files were selected to improve reproducibility and reviewer inspection
-without exposing restricted raw data or bulky local training artifacts.
+These files were selected to support reproducibility and inspection without
+exposing restricted raw data or proprietary simulator artefacts.
 
-## Recommended release workflow
+## Citation
 
-Before making the GitHub repository public:
+If you use this software, please cite the associated article:
 
-1. Review `docs/PROPRIETARY_COMPONENTS.md`
-2. Review `docs/UPLOAD_CHECKLIST.md`
-3. Confirm that no raw clinical or company-restricted files were copied
-4. Confirm that `vendor/physpk_backend/` is still empty except for the README
+> Sánchez-Herrero S, García-Álvarez D, Calvet L, Juan AA.  
+> Domain-validated residual XGBoost surrogates for model-informed
+> biopharmaceutics and population pharmacokinetic inference.  
+> *European Journal of Pharmaceutics and Biopharmaceutics* (2026).  
+> https://doi.org/10.1016/j.ejpb.2026.115260
 
-## Notes
+Citation metadata are also provided in `CITATION.cff`.
 
-- The GUI and CLI remain useful even without the proprietary backend for
-  command generation, synthetic tests, and manuscript asset preparation.
-- The exact PhysPK execution path requires local non-redistributed artifacts.
-- You may want to add a license and a `CITATION.cff` file before publishing the
-  repository.
+## License
+
+The non-proprietary source code in this repository is released under the MIT
+License. See `LICENSE` for details.
+
+The PhysPK®/EcosimPro model, exported runtime libraries, source datasets, and
+other third-party materials are not covered by this license.
