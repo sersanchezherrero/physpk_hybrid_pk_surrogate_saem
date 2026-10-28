@@ -134,12 +134,10 @@ py -3.11 -m pytest
 
 The `results/` folder contains selected derived outputs, including:
 
-- scenario-level summary tables
-- final estimates for the main scenarios
-- SAEM convergence traces
-- emulator validation metrics
-- sparse-sampling summaries
-- sensitivity-analysis summaries and plots
+- main-scenario and reference-truth summary tables
+- the 200-replicate balanced bootstrap summary
+- sparse-sampling validation results
+- sensitivity-analysis rankings and detailed summaries
 
 These files were selected to support reproducibility and inspection without
 exposing restricted raw data or proprietary simulator artefacts.
